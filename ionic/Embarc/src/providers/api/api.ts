@@ -1,35 +1,31 @@
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, URLSearchParams } from '@angular/http';
+import {Observable} from "rxjs/Observable";
 
 /**
  * Api is a generic REST Api handler. Set your API url first.
  */
 @Injectable()
 export class Api {
-  url: string = 'https://example.com/api/v1';
+  url: string = 'http://34.201.17.154:3000';
 
   constructor(public http: Http) {
   }
 
-  get(endpoint: string, params?: any, options?: RequestOptions) {
-    if (!options) {
-      options = new RequestOptions();
-    }
-
+  get(endpoint: string, params?: any) {
     // Support easy query params for GET requests
     if (params) {
       let p = new URLSearchParams();
       for (let k in params) {
         p.set(k, params[k]);
       }
-      // Set the search field if we have params and don't already have
-      // a search field set in options.
-      options.search = !options.search && p || options.search;
     }
 
-    return this.http.get(this.url + '/' + endpoint, options);
+    return this.http.get(this.url + '/' + endpoint)
+      .map(resp => resp.json());
   }
 
   post(endpoint: string, body: any, options?: RequestOptions) {
