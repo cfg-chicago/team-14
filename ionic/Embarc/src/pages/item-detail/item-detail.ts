@@ -20,8 +20,9 @@ export class ItemDetailPage {
     this.item = navParams.get('item');
     api.get(`getJourney?id=${this.item.id}&userid=3&type=student`).subscribe(
       response => {
+
         //console.log(response);
-        if(response.result=="already_made_journal") {
+        if(response['result']=="already_made_journal") {
           console.log("made a journal entry");
           this.displayResult(response);
         } else {
