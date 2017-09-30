@@ -22,7 +22,7 @@ export class WelcomePage {
     this.pleaseWait = "Loading...";
     setTimeout(()=>{
       this.pleaseWait = "";
-      this.navCtrl.push('LoginPage');
+      this.navCtrl.push('ListMasterPage');
     }, 1000);
 
 
