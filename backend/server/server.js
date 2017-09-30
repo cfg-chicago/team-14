@@ -67,8 +67,19 @@ var handleJourneyStudent = (journey, studentID) => {
 
 app.get('/getListJourneys', (req, res) => {
 	MongoClient.connect(url, (err, db) => {
+		if (err) throw err;
 		
-	})
+		db.collection("Journeys").find({}).toArray((err2, result) => {
+			if (err2) throw err2;
+			
+			resdata = {};
+			for (let i = 0; i < result.length;i++) {
+				resdata[parseInt(result[i].journeyId)] = result[i].name;
+			}
+			res.send(resdata);
+		});
+
+	});
 });
 
 app.get('/getJourney', (req, res) => {
