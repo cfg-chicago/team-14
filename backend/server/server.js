@@ -59,11 +59,6 @@ MongoClient.connect(url, function(err, db) {
 */
 
 
-var handleJourneyStudent = (journey, studentID) => {
-	if (journey.journal_entries[`studentid_${studentID}`]) {
-
-	}
-};
 
 app.get('/getListJourneys', (req, res) => {
 	MongoClient.connect(url, (err, db) => {
@@ -82,6 +77,22 @@ app.get('/getListJourneys', (req, res) => {
 	});
 });
 
+
+
+var handleJourneyStudent = (journey, studentID) => {
+	let student_journal = journey.journal_entries[`studentid_${studentID}`];
+
+	if (student_journal) {
+		return {result:"already_made_journal", rating: student_journal.rating, diary: student_journal.diary};
+	} else {
+		return {result:"create_journal"};
+	}
+};
+
+var handleJourneyTeacher = (journey) => {
+	
+};
+
 app.get('/getJourney', (req, res) => {
 	MongoClient.connect(url, (err, db) => {
 		if (err) throw err;
@@ -90,7 +101,7 @@ app.get('/getJourney', (req, res) => {
 			if (err2) throw err2;
 
 			if (req.query.type == "student") {
-					handleJourneyStudent(result[0], req.query.userid);
+					res.send(handleJourneyStudent(result[0], req.query.userid));
 			} else if (req.query.type == "teacher") {
 				console.log("teacher!");
 			}
@@ -99,6 +110,8 @@ app.get('/getJourney', (req, res) => {
 
 	});
 });
+
+
 
 
 
