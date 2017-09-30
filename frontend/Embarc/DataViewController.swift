@@ -7,6 +7,10 @@
 //
 
 import UIKit
+import Alamofire
+
+
+
 
 class DataViewController: UIViewController {
 
@@ -14,11 +18,20 @@ class DataViewController: UIViewController {
         
         self.performSegue(withIdentifier: "TimeLineSegue", sender: self)
     }
+    
+    
+   
     @IBOutlet weak var dataLabel: UILabel!
     var dataObject: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Alamofire.request("http://34.201.17.154:3000", encoding: JSONEncoding.default)
+            .responseJSON { response in
+                print(response.result.value as Any)
+        }
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
 
