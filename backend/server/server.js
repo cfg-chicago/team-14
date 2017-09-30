@@ -69,7 +69,7 @@ app.get('/getListJourneys', (req, res) => {
 			
 			resdata = {};
 			for (let i = 0; i < result.length;i++) {
-				resdata[parseInt(result[i].journeyId)] = result[i].name;
+				resdata[parseInt(result[i].journeyId)] = {name: result[i].name, image: result[i].image};
 			}
 			res.send(resdata);
 		});
@@ -90,12 +90,12 @@ var handleJourneyStudent = (journey, studentID) => {
 };
 
 var handleJourneyTeacher = (journey) => {
-	result = {students: [], averageRating: journey.averageRating};
+	var result = {students: [], averageRating: journey.averageRating};
 	
 	console.log(journey);
-	for (let i = 0; i < journey.journal_entries.length; i++) {
-		let currStudent = journey.journal_entries[i];
-		result[students].push({name:currStudent.name, answers:journey.answers});
+	for (var key in journey.journal_entries) {
+		let currStudent = journey.journal_entries[key];
+		result["students"].push({name:currStudent.name, answers:currStudent.answers});
 	}
 
 	return result;
