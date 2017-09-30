@@ -1,0 +1,20 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ item.name }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div class="item-profile" text-center #profilePic [style.background-image]="'url(' + item.image + ')'">
+  </div>
+
+  <div class="item-detail" padding>
+    <h2>{{item.name}}</h2>
+    <div *ngIf="rating!==-1">Rating: {{rating}}</div>
+    <p>{{entry}}</p>
+    <button *ngIf="createEntry" ion-button color="primary" (click)="startDiary()" block>Create a Journal Entry</button>
+  </div>
+</ion-content>

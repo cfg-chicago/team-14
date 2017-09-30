@@ -1,0 +1,31 @@
+<ion-content scroll="false">
+  <div class="splash-bg"></div>
+  <div class="splash-info">
+    <div class="splash-logo"></div>
+    <div><p></p></div>
+    <div class="splash-intro">
+      Embarc
+    </div>
+  </div>
+  <div padding>
+    <ion-list>
+
+      <ion-item>
+        <ion-label fixed>Email </ion-label>
+        <ion-input type="email" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>Password</ion-label>
+        <ion-input type="password" ></ion-input>
+      </ion-item>
+
+      <div padding>
+        <button ion-button color="primary" (click)="login()" block>{{ 'LOGIN_BUTTON' | translate }}</button>
+      </div>
+
+      <ion-item text-center>forgot password?</ion-item>
+
+    </ion-list>
+  </div>
+</ion-content>
+
