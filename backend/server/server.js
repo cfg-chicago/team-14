@@ -59,36 +59,67 @@ MongoClient.connect(url, function(err, db) {
 */
 
 
+
+app.get('/getListJourneys', (req, res) => {
+	MongoClient.connect(url, (err, db) => {
+		if (err) throw err;
+		
+		db.collection("Journeys").find({}).toArray((err2, result) => {
+			if (err2) throw err2;
+			
+			resdata = {};
+			for (let i = 0; i < result.length;i++) {
+				resdata[parseInt(result[i].journeyId)] = result[i].name;
+			}
+			res.send(resdata);
+		});
+
+	});
+});
+
+
+
 var handleJourneyStudent = (journey, studentID) => {
-		if (journey.journal_entries[`studentid_${studentID}`]) {
-				console.log("contains entry");
-		}
+	let student_journal = journey.journal_entries[`studentid_${studentID}`];
+
+	if (student_journal) {
+		return {result:"already_made_journal", rating: student_journal.rating, diary: student_journal.diary};
+	} else {
+		return {result:"create_journal"};
+	}
 };
 
+var handleJourneyTeacher = (journey) => {
+	
+};
 
 app.get('/getJourney', (req, res) => {
-		MongoClient.connect(url, function(err, db) {
-			if (err) throw err;
+	MongoClient.connect(url, (err, db) => {
+		if (err) throw err;
 
-			db.collection("Journeys").find({"journeyId":req.query.id}).toArray((err, result) => {
-				if (req.query.type == "student") {
-						handleJourneyStudent(result, req.query.userid);
-				} else if (req.query.type == "teacher") {
-					console.log("teacher!");
-				}
-				db.close();
-			});
+		db.collection("Journeys").find({journeyId:parseInt(req.query.id)}).toArray((err2, result) => {
+			if (err2) throw err2;
 
+			if (req.query.type == "student") {
+					res.send(handleJourneyStudent(result[0], req.query.userid));
+			} else if (req.query.type == "teacher") {
+				console.log("teacher!");
+			}
+			db.close();
 		});
+
+	});
 });
 
 
 
 
 
+
+
 app.get('/', function (req, res) {
-    console.log("someone here");
-    res.send("hello world!!");
+	console.log("someone here");
+	res.send("hello world!!");
 });
 
 
