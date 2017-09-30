@@ -4,26 +4,16 @@ import { IonicPage, ModalController, NavController } from 'ionic-angular';
 import { Item } from '../../models/item';
 import { Items } from '../../providers/providers';
 
-import {HttpClient} from '@angular/common/http';
-
 @IonicPage()
 @Component({
   selector: 'page-list-master',
   templateUrl: 'list-master.html'
 })
 export class ListMasterPage {
-  currentItems: Object;
+  currentItems: Item[];
 
-  constructor(public navCtrl: NavController, public items: Items, public modalCtrl: ModalController,public http: HttpClient) {
-    //this.currentItems = this.items.query();
-
-    this.http.get('http://34.201.17.154:3000/getListJourneys').subscribe(data => {
-      // Read the result field from the JSON response.
-      console.log(data);
-      this.currentItems = data;
-    });
-
-    //console.log(this.items.query());
+  constructor(public navCtrl: NavController, public items: Items, public modalCtrl: ModalController) {
+    this.currentItems = this.items.query();
   }
 
   /**
