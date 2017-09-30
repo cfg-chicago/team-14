@@ -90,7 +90,16 @@ var handleJourneyStudent = (journey, studentID) => {
 };
 
 var handleJourneyTeacher = (journey) => {
+	result = {students: [], averageRating: journey.averageRating};
 	
+	console.log(journey);
+	for (let i = 0; i < journey.journal_entries.length; i++) {
+		let currStudent = journey.journal_entries[i];
+		result[students].push({name:currStudent.name, answers:journey.answers});
+	}
+
+	return result;
+
 };
 
 app.get('/getJourney', (req, res) => {
@@ -100,10 +109,12 @@ app.get('/getJourney', (req, res) => {
 		db.collection("Journeys").find({journeyId:parseInt(req.query.id)}).toArray((err2, result) => {
 			if (err2) throw err2;
 
-			if (req.query.type == "student") {
-					res.send(handleJourneyStudent(result[0], req.query.userid));
+			if (result.length == 0) {
+				res.send({result:"Error, no valid journey."});
+			} else if (req.query.type == "student") {
+				res.send(handleJourneyStudent(result[0], req.query.userid));
 			} else if (req.query.type == "teacher") {
-				console.log("teacher!");
+				res.send(handleJourneyTeacher(result[0]));
 			}
 			db.close();
 		});
