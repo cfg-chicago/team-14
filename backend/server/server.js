@@ -67,9 +67,10 @@ app.get('/getListJourneys', (req, res) => {
 		db.collection("Journeys").find({}).toArray((err2, result) => {
 			if (err2) throw err2;
 			
-			resdata = [];
+			resdata = {};
 			for (let i = 0; i < result.length;i++) {
-				resdata.push({id: result[i].journeyId, name: result[i].name, image: result[i].image});
+				resdata['item' + result[i].journeyId] = {name: result[i].name, image: result[i].image};
+
 			}
 			res.send(resdata);
 		});
